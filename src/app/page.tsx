@@ -11,6 +11,8 @@ import CokDilli from '@/components/CokDilli'
 import Altyapi from '@/components/Altyapi'
 import Iletisim from '@/components/Iletisim'
 import Footer from '@/components/Footer'
+import WhatsAppButton from '@/components/WhatsAppButton'
+import Chatbot from '@/components/Chatbot'
 
 export default function Home() {
   return (
@@ -30,6 +32,8 @@ export default function Home() {
         <Iletisim />
       </main>
       <Footer />
+      <WhatsAppButton />
+      <Chatbot />
     </>
   )
 }

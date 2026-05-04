@@ -68,7 +68,7 @@ export default function Iletisim() {
     e.preventDefault()
     if (!form.isim || !form.eposta) return
     const msg = `Merhaba, ZekaHub hakkında bilgi almak istiyorum.%0A%0Aİsim: ${encodeURIComponent(form.isim)}%0AE-posta: ${encodeURIComponent(form.eposta)}%0ATelefon: ${encodeURIComponent(form.telefon)}%0AMesaj: ${encodeURIComponent(form.mesaj)}`
-    window.open(`https://wa.me/905322780000?text=${msg}`, '_blank')
+    window.open(`https://wa.me/902226060101?text=${msg}`, '_blank')
   }
 
   const iletisimBilgileri = [

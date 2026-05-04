@@ -1,0 +1,27 @@
+[
+  {
+    "id": "1",
+    "soru": "ZekaHub nedir?",
+    "cevap": "ZekaHub, işletmenize yapay zeka destekli ses asistanları ve otomasyon çözümleri sunan bir teknoloji şirketidir."
+  },
+  {
+    "id": "2",
+    "soru": "Fiyatlar ne kadar?",
+    "cevap": "Starter, Business ve Enterprise olmak üzere üç farklı paketimiz bulunmaktadır. Detaylı fiyat bilgisi için sayfamızdaki paketler bölümünü inceleyebilirsiniz."
+  },
+  {
+    "id": "3",
+    "soru": "Nasıl başlayabilirim?",
+    "cevap": "Hemen başlamak için sayfanın altındaki iletişim formunu doldurabilir veya WhatsApp'tan bize ulaşabilirsiniz."
+  },
+  {
+    "id": "4",
+    "soru": "Hangi sektörlere hizmet veriyorsunuz?",
+    "cevap": "Sağlık, hukuk, finans, emlak, eğitim ve e-ticaret başta olmak üzere pek çok sektöre hizmet veriyoruz."
+  },
+  {
+    "id": "5",
+    "soru": "Demo talep edebilir miyim?",
+    "cevap": "Evet! WhatsApp üzerinden bize ulaşarak ücretsiz demo talebinde bulunabilirsiniz."
+  }
+]
