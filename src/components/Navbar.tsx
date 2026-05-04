@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Özellikler', href: '#ozellikler' },
   { label: 'Güvenlik', href: '#guvenlik' },
   { label: 'Neden Biz', href: '#neden-biz' },
+  { label: 'İletişim', href: '#iletisim' },
 ]
 
 export default function Navbar() {

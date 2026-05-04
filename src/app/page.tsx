@@ -9,6 +9,7 @@ import CallAutomation from '@/components/CallAutomation'
 import Sektorler from '@/components/Sektorler'
 import CokDilli from '@/components/CokDilli'
 import Altyapi from '@/components/Altyapi'
+import Iletisim from '@/components/Iletisim'
 import Footer from '@/components/Footer'
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
         <Sektorler />
         <CokDilli />
         <Altyapi />
+        <Iletisim />
       </main>
       <Footer />
     </>
