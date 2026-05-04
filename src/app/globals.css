@@ -1,0 +1,170 @@
+@import "tailwindcss";
+@source "../";
+
+@theme {
+  --color-bg-base: #07070f;
+  --color-bg-surface: #0d0d1a;
+  --color-bg-card: #111124;
+  --color-gold: #f5c842;
+  --color-gold-dim: #c9a020;
+  --color-orange: #ff6b2b;
+  --color-orange-dim: #cc4e16;
+  --color-purple: #8b5cf6;
+  --color-purple-dim: #6d3fd4;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-gold: rgba(245, 200, 66, 0.25);
+  --color-border-orange: rgba(255, 107, 43, 0.25);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--color-bg-base);
+    color: white;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(245, 200, 66, 0.3);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: var(--color-gold);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #f5c842 0%, #ffaa00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-orange {
+    background: linear-gradient(135deg, #ff8c42 0%, #ff4500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-dark {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .card-dark:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn-orange {
+    background: linear-gradient(135deg, #ff6b2b 0%, #e84e0a 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.65rem 1.5rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(255, 107, 43, 0.35);
+  }
+
+  .btn-orange:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 107, 43, 0.5);
+  }
+
+  .btn-orange:active {
+    transform: translateY(0);
+  }
+
+  .btn-purple {
+    background: linear-gradient(135deg, #8b5cf6 0%, #6d3fd4 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.65rem 1.5rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+  }
+
+  .btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+  }
+
+  .btn-purple:active {
+    transform: translateY(0);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.65rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-outline:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(245, 200, 66, 0.2), 0 0 60px rgba(245, 200, 66, 0.08);
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 30px rgba(255, 107, 43, 0.25), 0 0 60px rgba(255, 107, 43, 0.1);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.25), 0 0 60px rgba(139, 92, 246, 0.1);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
