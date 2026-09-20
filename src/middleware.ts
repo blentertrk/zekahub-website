@@ -17,6 +17,17 @@ const WEBHOOK = '/api/whatsapp/webhook'
 export async function middleware(req: NextRequest) {
   const yol = req.nextUrl.pathname
 
+  /**
+   * WhatsApp beyni yalnizca Hetzner'deki kopyada calisir (Evolution ile ayni
+   * Docker agi, kendi Postgres'i). Vercel'deki pazarlama sitesi ayni depodan
+   * deploy edildigi icin bu yollar orada da var olurdu; WHATSAPP_AKTIF
+   * tanimli degilse yok sayiliyor ki iki panel/iki adres karisikligi olmasin.
+   */
+  const whatsappYolu = yol.startsWith(KORUNAN_API) || yol.startsWith('/admin/whatsapp')
+  if (whatsappYolu && process.env.WHATSAPP_AKTIF !== '1') {
+    return NextResponse.rewrite(new URL('/404', req.url))
+  }
+
   if (yol.startsWith(WEBHOOK)) return NextResponse.next()
 
   const sayfaKorunuyor = KORUNAN_SAYFALAR.some(p => yol.startsWith(p))

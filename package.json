@@ -13,13 +13,13 @@
     "@ai-sdk/google": "^3.0.67",
     "@ai-sdk/openai": "^3.0.59",
     "@anthropic-ai/sdk": "^0.127.0",
-    "@upstash/redis": "^1.38.4",
     "ai": "^6.0.175",
     "clsx": "^2.1.0",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.460.0",
     "next": "^15.3.3",
     "openai": "^7.20.0",
+    "pg": "^8.23.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwind-merge": "^2.2.0"
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.15.0",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "eslint": "^8.0.0",
