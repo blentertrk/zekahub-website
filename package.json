@@ -13,7 +13,7 @@
     "@ai-sdk/google": "^3.0.67",
     "@ai-sdk/openai": "^3.0.59",
     "@anthropic-ai/sdk": "^0.127.0",
-    "@supabase/supabase-js": "^2.116.0",
+    "@upstash/redis": "^1.38.4",
     "ai": "^6.0.175",
     "clsx": "^2.1.0",
     "framer-motion": "^11.18.2",

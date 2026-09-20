@@ -1,83 +1,65 @@
 /**
- * WhatsApp ayar ve kural deposu (Supabase).
+ * WhatsApp ayar ve kural deposu (Upstash Redis).
  *
  * Onceden bu veriler `src/data/*.json` dosyalarina fs.writeFile ile yaziliyordu.
  * Vercel'de dosya sistemi kalici DEGIL: panelden kaydedilen kurallar ve oraya
- * girilen AI API anahtari ilk deploy'da ucuyordu. Bu yuzden Supabase'e tasindi.
+ * girilen AI API anahtari ilk deploy'da ucuyordu.
  *
- * Tablolar (bkz. supabase/migrations):
- *   zekahub_whatsapp_ayarlar(anahtar text primary key, deger text)
- *   zekahub_whatsapp_kurallar(instance_id text primary key, sistem_prompt text)
+ * Neden Supabase degil: mevcut Supabase hesabi free planda ve aktif proje
+ * kotasi dolu. ZekaHub'i var olan bir projeye koymak, o projenin service
+ * key'ini (RLS'i bypass eden anahtar) ZekaHub'in ortamina tasimak demekti -
+ * ZekaHub sizsa Paris CRM verisi de acilirdi. Upstash bu urune izole.
  *
- * Servis anahtari kullanilir; bu modul YALNIZCA sunucu tarafindan cagrilmali.
+ * Gerekli ortam degiskenleri (Vercel > Storage > Upstash baglaninca otomatik gelir):
+ *   UPSTASH_REDIS_REST_URL
+ *   UPSTASH_REDIS_REST_TOKEN
+ *
+ * Anahtar duzeni:
+ *   zekahub:whatsapp:ai_api_key      -> string
+ *   zekahub:whatsapp:kurallar        -> hash { instanceId: sistemPrompt }
  */
-import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { Redis } from '@upstash/redis'
 
-const AYAR_TABLO = 'zekahub_whatsapp_ayarlar'
-const KURAL_TABLO = 'zekahub_whatsapp_kurallar'
-const AI_ANAHTAR_ADI = 'ai_api_key'
+const AI_ANAHTARI = 'zekahub:whatsapp:ai_api_key'
+const KURALLAR = 'zekahub:whatsapp:kurallar'
 
-let istemci: SupabaseClient | null = null
+let istemci: Redis | null = null
 
-function baglan(): SupabaseClient {
+function baglan(): Redis {
   if (istemci) return istemci
-  const url = process.env.SUPABASE_URL
-  const anahtar = process.env.SUPABASE_SERVICE_KEY
-  if (!url || !anahtar) {
-    throw new Error('SUPABASE_URL / SUPABASE_SERVICE_KEY tanimli degil')
+  const url = process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) {
+    throw new Error('UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN tanimli degil')
   }
-  istemci = createClient(url, anahtar, { auth: { persistSession: false } })
+  istemci = new Redis({ url, token })
   return istemci
 }
 
 /** AI saglayici anahtarini okur (yoksa bos metin). */
 export async function aiAnahtariniOku(): Promise<string> {
-  const { data, error } = await baglan()
-    .from(AYAR_TABLO)
-    .select('deger')
-    .eq('anahtar', AI_ANAHTAR_ADI)
-    .maybeSingle()
-  if (error) throw new Error(`Ayar okunamadi: ${error.message}`)
-  return data?.deger ?? ''
+  const deger = await baglan().get<string>(AI_ANAHTARI)
+  return deger ?? ''
 }
 
 /** AI saglayici anahtarini yazar. */
 export async function aiAnahtariniYaz(deger: string): Promise<void> {
-  const { error } = await baglan()
-    .from(AYAR_TABLO)
-    .upsert({ anahtar: AI_ANAHTAR_ADI, deger }, { onConflict: 'anahtar' })
-  if (error) throw new Error(`Ayar yazilamadi: ${error.message}`)
+  await baglan().set(AI_ANAHTARI, deger)
 }
 
 /** Tum instance kurallarini {instanceId: prompt} olarak doner. */
 export async function kurallariOku(): Promise<Record<string, string>> {
-  const { data, error } = await baglan()
-    .from(KURAL_TABLO)
-    .select('instance_id, sistem_prompt')
-  if (error) throw new Error(`Kurallar okunamadi: ${error.message}`)
-  const sonuc: Record<string, string> = {}
-  for (const satir of data ?? []) sonuc[satir.instance_id] = satir.sistem_prompt ?? ''
-  return sonuc
+  const hepsi = await baglan().hgetall<Record<string, string>>(KURALLAR)
+  return hepsi ?? {}
 }
 
 /** Tek bir instance'in kuralini okur (yoksa bos metin). */
 export async function kuralOku(instanceId: string): Promise<string> {
-  const { data, error } = await baglan()
-    .from(KURAL_TABLO)
-    .select('sistem_prompt')
-    .eq('instance_id', instanceId)
-    .maybeSingle()
-  if (error) throw new Error(`Kural okunamadi: ${error.message}`)
-  return data?.sistem_prompt ?? ''
+  const deger = await baglan().hget<string>(KURALLAR, instanceId)
+  return deger ?? ''
 }
 
 /** Tek bir instance'in kuralini yazar. */
 export async function kuralYaz(instanceId: string, sistemPrompt: string): Promise<void> {
-  const { error } = await baglan()
-    .from(KURAL_TABLO)
-    .upsert(
-      { instance_id: instanceId, sistem_prompt: sistemPrompt },
-      { onConflict: 'instance_id' },
-    )
-  if (error) throw new Error(`Kural yazilamadi: ${error.message}`)
+  await baglan().hset(KURALLAR, { [instanceId]: sistemPrompt })
 }
